@@ -8,7 +8,7 @@ class Conexion{
     private static final String url = "jdbc:mysql://localhost:3306/PetsServices";
     private static Connection connection = null;
 
-    public static Object getConnection(){
+    public static void getConnection(){
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(url, username, password);
@@ -27,7 +27,6 @@ class Conexion{
                 }
             }
         }
-        return connection;
     }
 }
 
