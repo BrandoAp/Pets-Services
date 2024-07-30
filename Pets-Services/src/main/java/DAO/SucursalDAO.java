@@ -8,5 +8,5 @@ import java.util.List;
 public interface SucursalDAO {
     boolean addSucursal(Sucursales sucursales) throws SQLException;
     List<Sucursales> getAllSucursales();
-    void getSucursalbyName();
+    Object getSucursalbyName(String Nombre_Sucursal) throws SQLException;
 }

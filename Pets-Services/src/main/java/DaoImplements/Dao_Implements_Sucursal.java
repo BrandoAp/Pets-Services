@@ -69,7 +69,24 @@ public class Dao_Implements_Sucursal implements SucursalDAO{
     }
 
     @Override
-    public void getSucursalbyName() {
+    public Object getSucursalbyName(String Nombre_Sucursal) throws SQLException{
+        String query = "SELECT * FROM Sucursales WHERE Nombre_Sucursal = ?";
+        try(PreparedStatement statement = connection.prepareStatement(query)){
+            statement.setString(2, Nombre_Sucursal);
 
+            try (ResultSet resultSet = statement.executeQuery()){
+                if (resultSet.next()){
+                   return new Sucursales(
+                            resultSet.getString("Codigo_Sucusal"),
+                            resultSet.getString("Nombre_Sucursal"),
+                            resultSet.getFloat("Latitud"),
+                            resultSet.getFloat("Longitud")
+                    );
+                }
+            }
+        } catch (SQLException e){
+            System.out.println("No se encontro la sucursal con el nombre ingresado"+ e.getMessage());
+        }
+        return null;
     }
 }
