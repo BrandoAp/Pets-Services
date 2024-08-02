@@ -8,9 +8,12 @@ import java.sql.SQLException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Dao_Implements_Sucursal implements SucursalDAO{
-    private Connection connection;
+    private static final Logger LOGGER = Logger.getLogger(Dao_Implements_Sucursal.class.getName());
+    private final Connection connection;
 
     public Dao_Implements_Sucursal (Connection connection){
         this.connection = connection;
@@ -63,13 +66,13 @@ public class Dao_Implements_Sucursal implements SucursalDAO{
                 );
             }
         } catch (SQLException e){
-            System.out.println(e.getMessage());
+            LOGGER.log(Level.SEVERE, "Error " + e.getMessage());
         }
         return allSucursales;
     }
 
     @Override
-    public Object getSucursalbyName(String Nombre_Sucursal) throws SQLException{
+    public Object getSucursalbyName(String Nombre_Sucursal){
         String query = "SELECT * FROM Sucursales WHERE Nombre_Sucursal = ?";
         try(PreparedStatement statement = connection.prepareStatement(query)){
             statement.setString(2, Nombre_Sucursal);
@@ -83,9 +86,11 @@ public class Dao_Implements_Sucursal implements SucursalDAO{
                             resultSet.getFloat("Longitud")
                     );
                 }
+            } catch (SQLException e){
+                LOGGER.warning(e.getMessage());
             }
         } catch (SQLException e){
-            System.out.println("No se encontro la sucursal con el nombre ingresado"+ e.getMessage());
+            LOGGER.log(Level.SEVERE,"Error " + e.getMessage());
         }
         return null;
     }

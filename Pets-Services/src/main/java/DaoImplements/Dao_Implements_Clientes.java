@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 public class Dao_Implements_Clientes implements ClienteDAO{
     private static final Logger LOGGER = Logger.getLogger(Dao_Implements_Clientes.class.getName());
-    private Connection connection;
+    private final Connection connection;
 
     public Dao_Implements_Clientes(Connection connection){
         this.connection = connection;
@@ -28,6 +28,7 @@ public class Dao_Implements_Clientes implements ClienteDAO{
     public List<Clientes> getAllClients() {
         List <Clientes> allClients = new ArrayList<>();
         String query = "SELECT * FROM Clientes";
+
         try (PreparedStatement statement = connection.prepareStatement(query);
         ResultSet resultSet = statement.executeQuery()){
             while (resultSet.next()){
@@ -42,7 +43,7 @@ public class Dao_Implements_Clientes implements ClienteDAO{
                 );
             }
         }catch (SQLException e){
-            System.out.println(e.getMessage());
+            LOGGER.warning("Error al obtener la lista de clientes" + e.getMessage());
         }
         return allClients;
     }
@@ -50,6 +51,11 @@ public class Dao_Implements_Clientes implements ClienteDAO{
     @Override
     public Object getClientById(String Cedula_C) {
         String query = "SELECT * FROM Clientes WHERE Cedula_C = ?";
+        if (connection == null){
+            LOGGER.severe("La conexion a la base de datos no esta establecida");
+            return false;
+        }
+
         try (PreparedStatement statement = connection.prepareStatement(query)){
             statement.setString(1, Cedula_C);
 
@@ -66,10 +72,10 @@ public class Dao_Implements_Clientes implements ClienteDAO{
                     );
                 }
             } catch (SQLException e){
-                System.out.println(e.getMessage());
+                LOGGER.warning("Error al obtener al cliente");
             }
         } catch (SQLException e){
-            System.out.println(e.getMessage());
+            LOGGER.warning("Error al ejecutar la petición solicitada");
         }
         return null;
     }

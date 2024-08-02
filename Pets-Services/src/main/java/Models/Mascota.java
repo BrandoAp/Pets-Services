@@ -24,6 +24,13 @@ public class Mascota {
         Cedula_C = cedula_C;
     }
 
+    public Mascota(String codRegistro, String nombreM, float peso, String tamano) {
+        Cod_registro = codRegistro;
+        Nombre_M = nombreM;
+        this.peso = peso;
+        Tamano = tamano;
+    }
+
     public String getCod_registro() {
         return Cod_registro;
     }

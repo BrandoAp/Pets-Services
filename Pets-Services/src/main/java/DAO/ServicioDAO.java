@@ -5,5 +5,5 @@ import java.util.List;
 
 public interface ServicioDAO {
     List<Servicios> getAllServices();
-    void getServicesById();
+    Object getServicesById(String Codigo_Servicio);
 }
